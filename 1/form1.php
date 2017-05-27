@@ -17,7 +17,7 @@
     </p>
     <p>
     <?php
-        if(empty($_GET['name'])){
+        if(empty($_GET['data'])){
             echo "<strong>*обязательное поле</strong>";
         }
     ?>

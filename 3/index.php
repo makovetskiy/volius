@@ -45,10 +45,19 @@ $db->connect();
         rowCount--;
     }
     function addRow() {
+        var count = parseInt($("#count").val());
+        if(count<1 || isNaN(count)){
+            alert('Введите коректное количество');
+            return;
+        }
         index++;
         rowCount++;
-        var count = $("#count").val();
+       
         var salad = $('input[name="salad"]:checked').val();
+        if(salad == null){
+            alert('Выберите салат');
+            return;
+        }
         $('#s-table').append('<tr id="tr'+index+'"><td>'+salad+'</td><td>'+count+'</td><td><button class="btn btn-danger"  onClick="delRow(tr'+index+','+index+')">Удалить</button></td></tr>');
        var s = {
            id    : index,
@@ -58,13 +67,31 @@ $db->connect();
        salads.push(s);
     }
     function submit(){
+        if(rowCount<1){
+            alert("не верное кол-во салатов");
+            return;
+        }
         $('#table_id').DataTable().destroy();
         var sklad = [];
+        var warehouse1 = true;
+        var warehouse2 = true;
         if($("#warehouse1").prop('checked') == true){
             sklad.push($("#warehouse1").val());
+            warehouse1 = true;
+        }
+        else{
+            warehouse1 = false;
         }
         if($("#warehouse2").prop('checked') == true){
             sklad.push($("#warehouse2").val());
+            warehouse2 = true;
+        }
+        else{
+            warehouse2 = false;
+        }
+        if(warehouse2 == false && warehouse1 == false){
+            alert("Выберите склад");
+            return;
         }
         $.ajax({
         url: 'calculate.php',
